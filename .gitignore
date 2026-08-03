@@ -1,0 +1,22 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+dist/
+
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+
+# Local visual QA outputs and superseded icon explorations.
+QA/
+Packaging/AppIconSource-bubble*.png
+Packaging/AppIconSource-silver*.png
+
+# Local Claude/Codex verification helpers and logs
+run-debug.command
+verify.command
+run-debug.log
+verify.log
+Packaging/AppIconSource-steelblue*.png

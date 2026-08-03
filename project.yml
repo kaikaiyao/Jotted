@@ -1,0 +1,87 @@
+name: Jotted
+
+options:
+  bundleIdPrefix: com.kaiyao
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CLANG_ENABLE_MODULES: YES
+
+targets:
+  JottedCore:
+    type: library.static
+    platform: macOS
+    sources:
+      - path: Sources/JottedCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaiyao.JottedCore
+        PRODUCT_NAME: JottedCore
+        SKIP_INSTALL: YES
+        DEFINES_MODULE: YES
+        CODE_SIGNING_ALLOWED: NO
+
+  Jotted:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/JottedApp
+      - path: Packaging/AppIcon.icns
+        buildPhase: resources
+    dependencies:
+      - target: JottedCore
+    info:
+      path: Packaging/Info.plist
+      properties:
+        CFBundleDisplayName: Jotted
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleIconFile: AppIcon
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: Jotted
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: "1.8.0"
+        CFBundleVersion: "12"
+        LSApplicationCategoryType: public.app-category.productivity
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        LSMultipleInstancesProhibited: true
+        LSUIElement: true
+        NSHighResolutionCapable: true
+        NSPrincipalClass: NSApplication
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaiyao.Jotted
+        PRODUCT_NAME: Jotted
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGNING_ALLOWED: NO
+        ENABLE_HARDENED_RUNTIME: NO
+        DEAD_CODE_STRIPPING: YES
+
+  JottedTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/JottedCoreTests
+    dependencies:
+      - target: JottedCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kaiyao.JottedTests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
+
+schemes:
+  Jotted:
+    build:
+      targets:
+        Jotted: all
+        JottedCore: all
+        JottedTests: [test]
+    test:
+      targets:
+        - JottedTests
